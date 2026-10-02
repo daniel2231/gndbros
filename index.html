@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta
+      name="description"
+      content="GNDBros — a Korean airsoft crew for games, gear, and everything around the field."
+    />
+    <title>GNDBros — No tactic, Best tactic.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <style>
+      :root {
+        --black: #0a0a0a;
+        --ink: #111111;
+        --paper: #f2f1ee;
+        --muted: #a8a8a4;
+        --red: #FB434B;
+        --red-deep: #FB434B;
+        --line: rgba(242, 241, 238, 0.17);
+        --pad: clamp(1.2rem, 3vw, 3.4rem);
+        --display: "Bebas Neue", "Arial Narrow", sans-serif;
+        --body: "Sora", Arial, sans-serif;
+        --display-ko: "IBM Plex Sans KR", "Noto Sans KR", sans-serif;
+        --body-ko: "IBM Plex Sans KR", "Noto Sans KR", sans-serif;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--black);
+        color: var(--paper);
+        font-family: var(--body);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.16;
+        z-index: 20;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.11'/%3E%3C/svg%3E");
+        mix-blend-mode: soft-light;
+      }
+      ::selection { color: var(--black); background: var(--red); }
+      a { color: inherit; text-decoration: none; }
+      button { font: inherit; }
+
+      .site-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.25rem var(--pad);
+        border-bottom: 1px solid transparent;
+        transition: background 300ms ease, border-color 300ms ease;
+      }
+      .site-nav.scrolled {
+        padding-top: .8rem;
+        padding-bottom: .8rem;
+        background: rgba(10,10,10,.88);
+        border-color: var(--line);
+        backdrop-filter: blur(12px);
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: .7rem;
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+      }
+      .brand-mark { width: 1.8rem; height: 1.8rem; color: var(--red); }
+      .nav-right { display: flex; align-items: center; gap: 1.4rem; }
+      .language-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: .34rem;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        font-size: .65rem;
+        font-weight: 700;
+        letter-spacing: .12em;
+        cursor: pointer;
+      }
+      .language-toggle [data-language-option] { transition: color 180ms ease; }
+      .language-toggle [data-language-option].is-active { color: var(--paper); }
+      .language-toggle:hover [data-language-option], .language-toggle:focus-visible [data-language-option] { color: var(--red); }
+      .language-slash { color: var(--red); }
+      .nav-link {
+        font-size: .7rem;
+        text-transform: uppercase;
+        letter-spacing: .16em;
+        color: var(--muted);
+        transition: color 180ms ease;
+      }
+      .nav-link:hover, .nav-link:focus-visible { color: var(--paper); }
+      .nav-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        padding: .65rem .8rem;
+        color: var(--paper);
+        border: 1px solid var(--red);
+        background: transparent;
+        font-size: .68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .13em;
+        transition: transform 180ms ease, background 180ms ease;
+      }
+      .nav-cta:hover, .nav-cta:focus-visible { color: var(--black); background: var(--red); transform: translateY(-2px); }
+      .nav-cta svg { width: .9rem; height: .9rem; }
+
+      .hero {
+        min-height: 100svh;
+        display: grid;
+        grid-template-columns: minmax(340px, .82fr) minmax(0, 1.18fr);
+        background: var(--black);
+      }
+      .hero-copy {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 8rem var(--pad) 3.3rem;
+        min-height: 100svh;
+        background: var(--black);
+      }
+      .hero-copy::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: -4rem;
+        bottom: 0;
+        width: 8rem;
+        background: var(--black);
+        clip-path: polygon(0 0, 50% 0, 100% 100%, 50% 100%);
+        z-index: -1;
+      }
+      .hero-kicker {
+        display: flex;
+        align-items: center;
+        gap: .7rem;
+        margin-bottom: 1.3rem;
+        color: var(--red);
+        font-size: .68rem;
+        font-weight: 700;
+        letter-spacing: .2em;
+        text-transform: uppercase;
+      }
+      .hero-kicker::before { content: ""; width: 2.2rem; height: 1px; background: var(--red); }
+      h1, h2, h3, p { margin: 0; }
+      .hero h1 {
+        max-width: 8ch;
+        font-family: var(--display);
+        font-size: clamp(4.8rem, 8.2vw, 8.5rem);
+        line-height: .82;
+        letter-spacing: -.015em;
+        text-transform: uppercase;
+      }
+      .hero h1 span { color: var(--red); }
+      .hero-detail {
+        display: flex;
+        align-items: flex-end;
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+      .hero-detail p { max-width: 27ch; color: var(--muted); font-size: .86rem; line-height: 1.6; }
+      .hero-actions { display: flex; gap: .65rem; margin-top: 1.8rem; }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        gap: .65rem;
+        min-height: 2.9rem;
+        padding: .75rem 1rem;
+        border: 1px solid var(--paper);
+        color: var(--paper);
+        font-size: .7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .14em;
+        transition: transform 180ms ease, color 180ms ease, background 180ms ease, border-color 180ms ease;
+      }
+      .button svg { width: 1rem; height: 1rem; }
+      .button.primary { border-color: var(--red); background: var(--red); color: var(--black); }
+      .button:hover, .button:focus-visible { transform: translateY(-3px); }
+      .button.secondary:hover, .button.secondary:focus-visible { border-color: var(--red); color: var(--red); }
+      .hero-image {
+        position: relative;
+        min-height: 100svh;
+        overflow: hidden;
+        background: #181818;
+      }
+      .hero-image img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: 61% center; filter: saturate(.82) contrast(1.08); transition: transform 1.2s cubic-bezier(.2,.75,.2,1); }
+      .hero-image:hover img { transform: scale(1.025); }
+      .hero-image::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,10,10,.22), transparent 25%, transparent 80%, rgba(10,10,10,.15)); z-index: 1; pointer-events: none; }
+      .image-stamp {
+        position: absolute;
+        right: 1.7rem;
+        bottom: 1.7rem;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+        width: 5.8rem;
+        height: 5.8rem;
+        border: 1px solid rgba(242,241,238,.5);
+        border-radius: 50%;
+        color: var(--paper);
+        font-size: .55rem;
+        text-align: center;
+        letter-spacing: .13em;
+        line-height: 1.4;
+        text-transform: uppercase;
+        animation: spin 18s linear infinite;
+      }
+      .image-stamp span { max-width: 5ch; }
+      .scroll-cue { position: absolute; left: var(--pad); bottom: 1.2rem; z-index: 3; display: flex; align-items: center; gap: .7rem; color: var(--muted); font-size: .64rem; letter-spacing: .15em; text-transform: uppercase; }
+      .scroll-cue::after { content: ""; width: 3.3rem; height: 1px; background: var(--red); }
+
+      .marquee { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--red); color: var(--black); }
+      .marquee-track { display: flex; width: max-content; animation: marquee 22s linear infinite; }
+      .marquee-item { display: flex; align-items: center; gap: 1.6rem; padding: .82rem 1.6rem; font-family: var(--display); font-size: clamp(1.9rem, 4vw, 3.3rem); letter-spacing: .015em; white-space: nowrap; }
+      .marquee-item svg { width: 1.25rem; height: 1.25rem; stroke-width: 1.5; }
+
+      .section { padding: clamp(5rem, 11vw, 10rem) var(--pad); }
+      .section-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; margin-bottom: 4rem; }
+      .section-title { max-width: 12ch; font-family: var(--display); font-size: clamp(4rem, 9vw, 9.2rem); font-weight: 400; line-height: .82; letter-spacing: -.01em; text-transform: uppercase; }
+      .section-title span { color: var(--red); }
+      .section-index { color: var(--red); font-size: .68rem; font-weight: 700; letter-spacing: .18em; }
+      .intro { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(3rem, 10vw, 12rem); align-items: end; }
+      .intro-lede { font-size: clamp(1.4rem, 2.5vw, 2.7rem); line-height: 1.12; letter-spacing: -.04em; }
+      .intro-lede em { color: var(--red); font-style: normal; }
+      .intro-copy { color: var(--muted); font-size: .95rem; line-height: 1.7; max-width: 46ch; }
+      .intro-copy strong { color: var(--paper); font-weight: 500; }
+      .slash-rule { display: flex; align-items: center; gap: 1rem; margin-top: 2rem; color: var(--muted); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; }
+      .slash-rule::before { content: ""; width: 3.2rem; height: 1px; background: var(--red); }
+
+      .crew-section { border-top: 1px solid var(--line); }
+      .crew-list { border-top: 1px solid var(--line); }
+      .crew-row { display: grid; grid-template-columns: 4rem 1fr 1fr 2rem; align-items: center; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px solid var(--line); transition: color 180ms ease, transform 220ms ease; }
+      .crew-row:hover { transform: translateX(8px); color: var(--red); }
+      .crew-num { color: var(--muted); font-size: .72rem; }
+      .crew-role { font-family: var(--display); font-size: clamp(2.3rem, 5vw, 5.5rem); line-height: .9; text-transform: uppercase; }
+      .crew-note { color: var(--muted); font-size: .8rem; line-height: 1.5; }
+      .crew-arrow { color: var(--red); transition: transform 180ms ease; }
+      .crew-arrow svg { width: 1.35rem; height: 1.35rem; }
+      .crew-row:hover .crew-arrow { transform: translate(4px, -4px); }
+
+      .field-section { background: var(--paper); color: var(--black); }
+      .field-section .section-index { color: var(--red-deep); }
+      .field-section .section-head { align-items: end; }
+      .field-section .section-title { max-width: 8ch; }
+      .field-intro { max-width: 30ch; font-size: .9rem; line-height: 1.65; }
+      .field-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(10,10,10,.25); }
+      .field-card { min-height: 22rem; padding: 1.2rem 1.1rem 1.4rem 0; border-right: 1px solid rgba(10,10,10,.25); display: flex; flex-direction: column; justify-content: space-between; }
+      .field-card + .field-card { padding-left: 1.1rem; }
+      .field-card:last-child { border-right: 0; }
+      .field-card-num { color: var(--red-deep); font-size: .7rem; font-weight: 700; letter-spacing: .14em; }
+      .field-card h3 { max-width: 6ch; font-family: var(--display); font-size: clamp(3.2rem, 6vw, 6rem); font-weight: 400; line-height: .82; text-transform: uppercase; }
+      .field-card p { max-width: 24ch; font-size: .83rem; line-height: 1.55; }
+      .field-card-mark { color: var(--red-deep); }
+      .field-card-mark svg { width: 2.5rem; height: 2.5rem; stroke-width: 1.4; }
+
+      .faq-section { border-top: 1px solid var(--line); }
+      .faq-section .section-head { display: grid; grid-template-columns: .42fr 1fr .45fr; align-items: end; }
+      .faq-section .section-title { max-width: 8ch; }
+      .faq-intro { max-width: 34ch; color: var(--muted); font-size: .9rem; line-height: 1.7; }
+      .faq-grid { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--line); }
+      .faq-item { border-bottom: 1px solid var(--line); }
+      .faq-item:nth-child(odd) { border-right: 1px solid var(--line); }
+      .faq-item summary {
+        display: grid;
+        grid-template-columns: 1.7rem 1fr 1rem;
+        align-items: center;
+        gap: .9rem;
+        min-height: 5.2rem;
+        padding: 1rem 1.3rem;
+        cursor: pointer;
+        list-style: none;
+        font-size: .88rem;
+        font-weight: 600;
+        line-height: 1.45;
+      }
+      .faq-item summary::-webkit-details-marker { display: none; }
+      .faq-item summary:focus-visible { outline: 2px solid var(--red); outline-offset: -2px; }
+      .faq-icon { color: var(--red); }
+      .faq-icon svg, .faq-toggle svg { width: 1.15rem; height: 1.15rem; stroke-width: 1.7; }
+      .faq-toggle { color: var(--muted); transition: transform 180ms ease, color 180ms ease; }
+      .faq-item[open] .faq-toggle { color: var(--red); transform: rotate(45deg); }
+      .faq-answer { max-width: 58ch; padding: 0 3.9rem 1.5rem; color: var(--muted); font-size: .82rem; line-height: 1.75; }
+
+      .invite { position: relative; overflow: hidden; display: grid; grid-template-columns: 1fr .8fr; gap: 2rem; background: var(--red); color: var(--black); }
+      .invite::after { content: "GND"; position: absolute; right: -1vw; bottom: -5vw; color: rgba(10,10,10,.08); font-family: var(--display); font-size: 31vw; line-height: .7; pointer-events: none; }
+      .invite h2 { position: relative; z-index: 1; max-width: 7ch; font-family: var(--display); font-size: clamp(5rem, 12vw, 13rem); font-weight: 400; line-height: .78; text-transform: uppercase; }
+      .invite-copy { position: relative; z-index: 1; align-self: end; max-width: 31ch; font-size: .94rem; line-height: 1.65; }
+      .invite-copy .button { margin-top: 1.6rem; border-color: var(--black); color: var(--black); }
+      .invite-copy .button:hover { background: var(--black); color: var(--red); }
+
+      footer { display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding: 1.5rem var(--pad); color: var(--muted); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+      footer strong { color: var(--paper); font-weight: 600; }
+      .footer-links { display: flex; gap: 1.2rem; }
+      .footer-links a { display: inline-flex; align-items: center; gap: .35rem; }
+      .footer-links a svg { width: .82rem; height: .82rem; }
+      .footer-links a:hover { color: var(--red); }
+
+      .reveal { opacity: 0; transform: translateY(22px); transition: opacity 700ms cubic-bezier(.2,.75,.2,1), transform 700ms cubic-bezier(.2,.75,.2,1); }
+      .reveal.is-visible { opacity: 1; transform: translateY(0); }
+      .hero-copy > * { animation: rise 850ms cubic-bezier(.2,.75,.2,1) both; }
+      .hero-copy > *:nth-child(2) { animation-delay: 90ms; }
+      .hero-copy > *:nth-child(3) { animation-delay: 180ms; }
+      .hero-copy > *:nth-child(4) { animation-delay: 270ms; }
+      @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes marquee { to { transform: translateX(-50%); } }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+        .reveal { opacity: 1; transform: none; }
+      }
+      @media (max-width: 780px) {
+        .site-nav { padding-top: 1rem; padding-bottom: 1rem; }
+        .nav-link { display: none; }
+        .hero { display: flex; flex-direction: column; }
+        .hero-copy { min-height: auto; padding-top: 6.5rem; padding-bottom: 1.5rem; }
+        .hero-copy::after { display: none; }
+        .hero h1 { max-width: 7ch; font-size: clamp(4.2rem, 17vw, 7rem); }
+        .hero-detail { align-items: flex-start; flex-direction: column; gap: 1.2rem; }
+        .hero-image { min-height: 60svh; }
+        .hero-image img { object-position: 62% center; }
+        .scroll-cue { display: none; }
+        .section-head { margin-bottom: 2.5rem; }
+        .intro { grid-template-columns: 1fr; gap: 2.4rem; }
+        .crew-row { grid-template-columns: 2rem 1fr 1.4rem; gap: .8rem; }
+        .crew-note { display: none; }
+        .field-grid { grid-template-columns: 1fr; }
+        .field-card, .field-card + .field-card { min-height: 15rem; padding: 1.2rem 0; border-right: 0; border-bottom: 1px solid rgba(10,10,10,.25); }
+        .field-card:last-child { border-bottom: 0; }
+        .field-card h3 { max-width: none; }
+        .faq-grid { grid-template-columns: 1fr; }
+        .faq-section .section-head { grid-template-columns: 1fr; gap: 1.4rem; }
+        .faq-item:nth-child(odd) { border-right: 0; }
+        .faq-item summary { padding-left: 0; padding-right: 0; }
+        .faq-answer { padding-left: 2.6rem; padding-right: 0; }
+        .invite { grid-template-columns: 1fr; gap: 3.4rem; }
+        .invite-copy { max-width: 32ch; }
+        footer { align-items: flex-start; flex-direction: column; gap: .8rem; }
+      }
+
+      html[lang="ko"] body {
+        font-family: var(--body-ko);
+        line-height: 1.75;
+        word-break: keep-all;
+      }
+      html[lang="ko"] .hero h1,
+      html[lang="ko"] .section-title,
+      html[lang="ko"] .crew-role,
+      html[lang="ko"] .field-card h3,
+      html[lang="ko"] .faq-section .section-title,
+      html[lang="ko"] .invite h2 {
+        font-family: var(--display-ko);
+        font-weight: 700;
+        letter-spacing: -.055em;
+        word-break: keep-all;
+      }
+      html[lang="ko"] .hero h1 { line-height: 1.02; }
+      html[lang="ko"] .hero-detail p { line-height: 1.85; }
+      html[lang="ko"] .section-title { line-height: .98; }
+      html[lang="ko"] .intro-lede { line-height: 1.38; }
+      html[lang="ko"] .intro-copy { line-height: 1.9; }
+      html[lang="ko"] .slash-rule { line-height: 1.45; }
+      html[lang="ko"] .crew-role { line-height: 1.05; }
+      html[lang="ko"] .crew-note { line-height: 1.8; }
+      html[lang="ko"] .field-intro { line-height: 1.85; }
+      html[lang="ko"] .field-card h3 { line-height: 1.02; }
+      html[lang="ko"] .field-card h3 { font-size: clamp(2.4rem, 4.3vw, 4.8rem); }
+      html[lang="ko"] .field-card p { line-height: 1.8; }
+      html[lang="ko"] .faq-intro { line-height: 1.9; }
+      html[lang="ko"] .faq-item summary { line-height: 1.7; }
+      html[lang="ko"] .faq-answer { line-height: 1.9; }
+      html[lang="ko"] .hero h1.brand-slogan { font-family: var(--display); font-weight: 400; letter-spacing: -.015em; line-height: .82; word-break: normal; }
+      html[lang="ko"] .invite h2 { line-height: .98; }
+      html[lang="ko"] .invite-copy { line-height: 1.85; }
+    </style>
+    <link rel="stylesheet" href="refinements.css" />
+  </head>
+  <body>
+    <!--
+      THESIS: GNDBros feels like a crew you stumble into at dusk, not a club brochure.
+      OWN-WORLD: near-black field notes, signal red, condensed campaign type, wet concrete, and one human image.
+      STORY: this is a young Korean airsoft team with its own rituals; the visitor should want to meet them.
+      FIRST VIEWPORT: split-screen image and oversized statement, with one direct invitation at the lower left.
+      FORM: editorial campaign page with a hero, moving statement rail, open crew list, ritual sequence, and red close.
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+    -->
+    <header class="site-nav" data-nav>
+      <a class="brand" href="#top" aria-label="GNDBros home">
+        <img class="brand-mark brand-logo" src="assets/gndbros-logo.png" width="256" height="256" alt="" aria-hidden="true" />
+        GNDBROS
+      </a>
+      <nav class="nav-right" aria-label="Primary navigation">
+        <a class="nav-link" href="#crew" data-i18n="nav.crew">Why us</a>
+        <a class="nav-link" href="#field" data-i18n="nav.field">Before you join</a>
+        <button class="language-toggle" type="button" data-language-toggle aria-label="Switch language">
+          <span data-language-option="en" class="is-active">EN</span><span class="language-slash">/</span><span data-language-option="ko">KR</span>
+        </button>
+        <a class="nav-cta" href="#join"><span data-i18n="nav.join">Join us</span> <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="hero-kicker" data-i18n="hero.kicker">Seoul & Gyeonggi / Airsoft team</p>
+          <h1 id="hero-title" class="brand-slogan" data-i18n="hero.title">No tactic.<br /><span>Best tactic.</span></h1>
+          <div class="hero-detail">
+            <div>
+              <p data-i18n="hero.description">Meet GNDBros: an airsoft crew with a name, and a vibe, that are hard to ignore.</p>
+              <div class="hero-actions">
+                <a class="button primary" href="#crew"><span data-i18n="hero.meet">Why we're different</span> <i data-lucide="arrow-right" aria-hidden="true"></i></a>
+                <a class="button secondary" href="#faq" data-i18n="hero.rhythm">Read the FAQ</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="assets/gndbros-team.png" width="2048" height="1574" fetchpriority="high" alt="GNDBros teammates together at an outdoor airsoft field" data-i18n-alt="hero.imageAlt" />
+        </div>
+        <div class="scroll-cue" data-i18n="hero.scroll">Meet the brothers</div>
+      </section>
+
+      <div class="marquee" aria-label="No tactic, Best tactic" data-i18n-aria="marquee.aria">
+        <div class="marquee-track">
+          <div class="marquee-item"><span data-i18n="marquee.title">No tactic. Best tactic.</span><i data-lucide="asterisk" aria-hidden="true"></i></div><div class="marquee-item"><span data-i18n="marquee.title">No tactic. Best tactic.</span><i data-lucide="asterisk" aria-hidden="true"></i></div><div class="marquee-item"><span data-i18n="marquee.title">No tactic. Best tactic.</span><i data-lucide="asterisk" aria-hidden="true"></i></div><div class="marquee-item"><span data-i18n="marquee.title">No tactic. Best tactic.</span><i data-lucide="asterisk" aria-hidden="true"></i></div>
+        </div>
+      </div>
+
+      <section class="section" id="about">
+        <div class="section-head reveal"><span class="section-index" data-i18n="about.index">/ 01 — GNDBros</span></div>
+        <div class="intro">
+          <p class="intro-lede reveal" data-i18n="about.lede">The name tells you this is <em>not going to be easy.</em></p>
+          <div class="reveal">
+            <p class="intro-copy" data-i18n="about.copy"><strong>We are GNDBros, an airsoft team active across Seoul and Gyeonggi.</strong> Airsoft brought us together, but the team goes beyond the field. Games, driving, camping, gear talk, and the stories we keep making together are all part of it.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section crew-section" id="crew">
+        <div class="section-head reveal"><span class="section-index" data-i18n="crew.index">/ 02 — Why we're different</span><h2 class="section-title" data-i18n="crew.title">More than<br /><span>airsoft.</span></h2></div>
+        <div class="crew-list reveal">
+          <article class="crew-row"><span class="crew-num">01</span><span class="crew-role" data-i18n="crew.activities">Different activities</span><span class="crew-note" data-i18n="crew.activities.note">Airsoft, gaming, driving, camping, and whatever gets the group moving.</span><span class="crew-arrow"><i data-lucide="gamepad-2" aria-hidden="true"></i></span></article>
+          <article class="crew-row"><span class="crew-num">02</span><span class="crew-role" data-i18n="crew.backgrounds">Different backgrounds</span><span class="crew-note" data-i18n="crew.backgrounds.note">Soldiers, developers, researchers, and specialists from all kinds of fields.</span><span class="crew-arrow"><i data-lucide="users" aria-hidden="true"></i></span></article>
+          <article class="crew-row"><span class="crew-num">03</span><span class="crew-role" data-i18n="crew.knowledge">Hard-earned data</span><span class="crew-note" data-i18n="crew.knowledge.note">Years of trying different brands have built a deep pool of practical gear knowledge.</span><span class="crew-arrow"><i data-lucide="database" aria-hidden="true"></i></span></article>
+          <article class="crew-row"><span class="crew-num">04</span><span class="crew-role" data-i18n="crew.newbies">Newbies welcome</span><span class="crew-note" data-i18n="crew.newbies.note">Eight-year veterans and first-time players share the same field.</span><span class="crew-arrow"><i data-lucide="badge-check" aria-hidden="true"></i></span></article>
+        </div>
+      </section>
+
+      <section class="section field-section" id="field">
+        <div class="section-head reveal"><h2 class="section-title" data-i18n="field.title">Come as <span>you are.</span></h2><p class="field-intro" data-i18n="field.intro">You do not need a complete kit, a matching uniform, or perfect attendance to start.</p></div>
+        <div class="field-grid reveal">
+          <article class="field-card"><span class="field-card-num" data-i18n="field.gear.num">01 / GEAR</span><div class="field-card-mark"><i data-lucide="backpack" aria-hidden="true"></i></div><h3 data-i18n="field.gear.title">No gear? No problem.</h3><p data-i18n="field.gear.copy">Ask before game day and the team will help arrange suitable rental equipment.</p></article>
+          <article class="field-card"><span class="field-card-num" data-i18n="field.style.num">02 / STYLE</span><div class="field-card-mark"><i data-lucide="shirt" aria-hidden="true"></i></div><h3 data-i18n="field.style.title">Wear your own style.</h3><p data-i18n="field.style.copy">There is no team uniform. Any outfit that follows the rules is welcome.</p></article>
+          <article class="field-card"><span class="field-card-num" data-i18n="field.pace.num">03 / PACE</span><div class="field-card-mark"><i data-lucide="calendar-check" aria-hidden="true"></i></div><h3 data-i18n="field.pace.title">Play at your pace.</h3><p data-i18n="field.pace.copy">Joining every game is not mandatory. Come along, meet the team, and watch the field first.</p></article>
+        </div>
+      </section>
+
+      <section class="section faq-section" id="faq">
+        <div class="section-head reveal"><span class="section-index" data-i18n="faq.index">/ 03 — Before your first game</span><h2 class="section-title" data-i18n="faq.title">FAQ</h2><p class="faq-intro" data-i18n="faq.intro">The practical things people ask before they meet GNDBros.</p></div>
+        <div class="faq-grid reveal">
+          <details class="faq-item"><summary><span class="faq-icon"><i data-lucide="circle-dollar-sign" aria-hidden="true"></i></span><span data-i18n="faq.dues.q">Are there membership dues?</span><span class="faq-toggle"><i data-lucide="plus" aria-hidden="true"></i></span></summary><p class="faq-answer" data-i18n="faq.dues.a">Yes. Dues are KRW 3,000 every six months.</p></details>
+          <details class="faq-item"><summary><span class="faq-icon"><i data-lucide="backpack" aria-hidden="true"></i></span><span data-i18n="faq.gear.q">Do I need my own equipment?</span><span class="faq-toggle"><i data-lucide="plus" aria-hidden="true"></i></span></summary><p class="faq-answer" data-i18n="faq.gear.a">No. Request a rental before the game and the team will help find suitable equipment.</p></details>
+          <details class="faq-item"><summary><span class="faq-icon"><i data-lucide="shirt" aria-hidden="true"></i></span><span data-i18n="faq.uniform.q">Is there a team uniform?</span><span class="faq-toggle"><i data-lucide="plus" aria-hidden="true"></i></span></summary><p class="faq-answer" data-i18n="faq.uniform.a">No. Wear what you like as long as it follows the team rules.</p></details>
+          <details class="faq-item"><summary><span class="faq-icon"><i data-lucide="crosshair" aria-hidden="true"></i></span><span data-i18n="faq.trigger.q">Can I use HPA or a binary trigger?</span><span class="faq-toggle"><i data-lucide="plus" aria-hidden="true"></i></span></summary><p class="faq-answer" data-i18n="faq.trigger.a">No. GNDBros restricts both HPA systems and binary triggers. Ask the team before using unfamiliar equipment.</p></details>
+          <details class="faq-item"><summary><span class="faq-icon"><i data-lucide="calendar-check" aria-hidden="true"></i></span><span data-i18n="faq.required.q">Do I have to play every game?</span><span class="faq-toggle"><i data-lucide="plus" aria-hidden="true"></i></span></summary><p class="faq-answer" data-i18n="faq.required.a">No. You can come along, spend time with the team, and observe the game atmosphere without playing.</p></details>
+          <details class="faq-item"><summary><span class="faq-icon"><i data-lucide="badge-check" aria-hidden="true"></i></span><span data-i18n="faq.age.q">Is there an age requirement?</span><span class="faq-toggle"><i data-lucide="plus" aria-hidden="true"></i></span></summary><p class="faq-answer" data-i18n="faq.age.a">Members must be 18 or older. Minors may only participate with a guardian present.</p></details>
+          <details class="faq-item"><summary><span class="faq-icon"><i data-lucide="map-pin" aria-hidden="true"></i></span><span data-i18n="faq.field.q">Does the team own a field?</span><span class="faq-toggle"><i data-lucide="plus" aria-hidden="true"></i></span></summary><p class="faq-answer" data-i18n="faq.field.a">Not yet. The team visits different fields depending on each game.</p></details>
+          <details class="faq-item"><summary><span class="faq-icon"><i data-lucide="car-front" aria-hidden="true"></i></span><span data-i18n="faq.transport.q">How do we get to the field?</span><span class="faq-toggle"><i data-lucide="plus" aria-hidden="true"></i></span></summary><p class="faq-answer" data-i18n="faq.transport.a">Public transport is the default, but members often share rides with teammates who drive.</p></details>
+          <details class="faq-item"><summary><span class="faq-icon"><i data-lucide="shield-check" aria-hidden="true"></i></span><span data-i18n="faq.safety.q">Is protective gear required?</span><span class="faq-toggle"><i data-lucide="plus" aria-hidden="true"></i></span></summary><p class="faq-answer" data-i18n="faq.safety.a">Goggles are mandatory. A face mask is optional but strongly recommended to protect your teeth and face.</p></details>
+          <details class="faq-item"><summary><span class="faq-icon"><i data-lucide="circle-help" aria-hidden="true"></i></span><span data-i18n="faq.normal.q">Are the members normal?</span><span class="faq-toggle"><i data-lucide="plus" aria-hidden="true"></i></span></summary><p class="faq-answer" data-i18n="faq.normal.a">Unfortunately, no. Many claim otherwise. Do not believe them.</p></details>
+        </div>
+      </section>
+
+      <section class="section invite" id="join">
+        <h2 class="reveal" data-i18n="invite.title">Start something<br /><span>different.</span></h2>
+        <div class="invite-copy reveal"><p data-i18n="invite.copy">From experienced players to complete beginners, there is room to start at your own pace. Follow GNDBros and ask anything before your first game.</p><a class="button" href="https://www.instagram.com/gndbros_airsoft/" target="_blank" rel="noreferrer"><span data-i18n="invite.cta">Meet us on Instagram</span> <i data-lucide="arrow-up-right" aria-hidden="true"></i></a></div>
+      </section>
+    </main>
+
+    <footer>
+      <span><strong>GNDBROS</strong> / Seoul, KR</span>
+      <span data-i18n="footer.tagline">No tactic. Best tactic.</span>
+      <div class="footer-links"><a href="https://www.instagram.com/gndbros_airsoft/" target="_blank" rel="noreferrer"><span data-i18n="footer.instagram">@gndbros_airsoft</span> <i data-lucide="arrow-up-right" aria-hidden="true"></i></a><a href="#top"><span data-i18n="footer.top">Back to top</span> <i data-lucide="arrow-up" aria-hidden="true"></i></a></div>
+    </footer>
+
+    <script>
+      const nav = document.querySelector('[data-nav]');
+      const languageToggle = document.querySelector('[data-language-toggle]');
+      const translations = {
+        en: {
+          title: 'GNDBros — No tactic, Best tactic.',
+          languageLabel: 'Switch language',
+          'nav.crew': 'Why us',
+          'nav.field': 'Before you join',
+          'nav.join': 'Join us',
+          'hero.kicker': 'Seoul & Gyeonggi / Airsoft team',
+          'hero.title': 'No tactic.<br /><span>Best tactic.</span>',
+          'hero.description': 'Meet GNDBros: an airsoft crew with a name, and a vibe, that are hard to ignore.',
+          'hero.imageAlt': 'GNDBros teammates together at an outdoor airsoft field',
+          'hero.meet': 'Why we\'re different',
+          'hero.rhythm': 'Read the FAQ',
+          'hero.scroll': 'Meet the brothers',
+          'marquee.title': 'No tactic. Best tactic.',
+          'marquee.aria': 'No tactic, Best tactic',
+          'about.index': '/ 01 — GNDBros',
+          'about.lede': 'The name tells you this is <em>not going to be easy.</em>',
+          'about.copy': '<strong>We are GNDBros, an airsoft team active across Seoul and Gyeonggi.</strong> Airsoft brought us together, but the team goes beyond the field. Games, driving, camping, gear talk, and the stories we keep making together are all part of it.',
+          'crew.index': '/ 02 — Why we\'re different',
+          'crew.title': 'More than<br /><span>airsoft.</span>',
+          'crew.activities': 'Different activities',
+          'crew.activities.note': 'Airsoft, gaming, driving, camping, and whatever gets the group moving.',
+          'crew.backgrounds': 'Different backgrounds',
+          'crew.backgrounds.note': 'Soldiers, developers, researchers, and specialists from all kinds of fields.',
+          'crew.knowledge': 'Hard-earned data',
+          'crew.knowledge.note': 'Years of trying different brands have built a deep pool of practical gear knowledge.',
+          'crew.newbies': 'Newbies welcome',
+          'crew.newbies.note': 'Eight-year veterans and first-time players share the same field.',
+          'field.title': 'Come as <span>you are.</span>',
+          'field.intro': 'You do not need a complete kit, a matching uniform, or perfect attendance to start.',
+          'field.gear.num': '01 / GEAR',
+          'field.gear.title': 'No gear? No problem.',
+          'field.gear.copy': 'Ask before game day and the team will help arrange suitable rental equipment.',
+          'field.style.num': '02 / STYLE',
+          'field.style.title': 'Wear your own style.',
+          'field.style.copy': 'There is no team uniform. Any outfit that follows the rules is welcome.',
+          'field.pace.num': '03 / PACE',
+          'field.pace.title': 'Play at your pace.',
+          'field.pace.copy': 'Joining every game is not mandatory. Come along, meet the team, and watch the field first.',
+          'faq.index': '/ 03 — Before your first game',
+          'faq.title': 'FAQ',
+          'faq.intro': 'The practical things people ask before they meet GNDBros.',
+          'faq.dues.q': 'Are there membership dues?',
+          'faq.dues.a': 'Yes. Dues are KRW 3,000 every six months.',
+          'faq.gear.q': 'Do I need my own equipment?',
+          'faq.gear.a': 'No. Request a rental before the game and the team will help find suitable equipment.',
+          'faq.uniform.q': 'Is there a team uniform?',
+          'faq.uniform.a': 'No. Wear what you like as long as it follows the team rules.',
+          'faq.trigger.q': 'Can I use HPA or a binary trigger?',
+          'faq.trigger.a': 'No. GNDBros restricts both HPA systems and binary triggers. Ask the team before using unfamiliar equipment.',
+          'faq.required.q': 'Do I have to play every game?',
+          'faq.required.a': 'No. You can come along, spend time with the team, and observe the game atmosphere without playing.',
+          'faq.age.q': 'Is there an age requirement?',
+          'faq.age.a': 'Members must be 18 or older. Minors may only participate with a guardian present.',
+          'faq.field.q': 'Does the team own a field?',
+          'faq.field.a': 'Not yet. The team visits different fields depending on each game.',
+          'faq.transport.q': 'How do we get to the field?',
+          'faq.transport.a': 'Public transport is the default, but members often share rides with teammates who drive.',
+          'faq.safety.q': 'Is protective gear required?',
+          'faq.safety.a': 'Goggles are mandatory. A face mask is optional but strongly recommended to protect your teeth and face.',
+          'faq.normal.q': 'Are the members normal?',
+          'faq.normal.a': 'Unfortunately, no. Many claim otherwise. Do not believe them.',
+          'invite.title': 'Start something<br /><span>different.</span>',
+          'invite.copy': 'From experienced players to complete beginners, there is room to start at your own pace. Follow GNDBros and ask anything before your first game.',
+          'invite.cta': 'Meet us on Instagram',
+          'footer.tagline': 'No tactic. Best tactic.',
+          'footer.instagram': '@gndbros_airsoft',
+          'footer.top': 'Back to top'
+        },
+        ko: {
+          title: 'GNDBros — No tactic, Best tactic.',
+          languageLabel: '언어 전환',
+          'nav.crew': '차이점',
+          'nav.field': '참여 전',
+          'nav.join': '함께하기',
+          'hero.kicker': '서울·경기 / 에어소프트 팀',
+          'hero.title': 'No tactic.<br /><span>Best tactic.</span>',
+          'hero.description': '이름부터 쉽지 않은 에어소프트 팀, 개노답 형제들을 소개합니다.',
+          'hero.imageAlt': '야외 에어소프트 필드에 함께 모인 개노답 형제들 팀원들',
+          'hero.meet': '우리가 다른 이유',
+          'hero.rhythm': '자주 묻는 질문',
+          'hero.scroll': '형제들 만나기',
+          'marquee.title': 'No tactic. Best tactic.',
+          'marquee.aria': 'No tactic, Best tactic',
+          'about.index': '/ 01 — 개노답 형제들',
+          'about.lede': '이름에서 느껴지는 <em>쉽지 않은 바이브.</em>',
+          'about.copy': '<strong>우리는 서울·경기 지역에서 에어소프트건 서바이벌 게임을 하는 개노답 형제들입니다.</strong> 에어소프트로 모였지만 게임, 드라이빙, 캠핑 등 필드 밖에서도 함께 움직입니다. 지금부터 잊을 수 없는 색다른 취미생활을 시작해보세요.',
+          'crew.index': '/ 02 — 우리는 타팀과 달라요',
+          'crew.title': '에어소프트<br /><span>그 이상.</span>',
+          'crew.activities': '다양한 활동',
+          'crew.activities.note': '에어소프트뿐 아니라 게임, 드라이빙, 캠핑 등 다양한 활동을 함께합니다.',
+          'crew.backgrounds': '다양한 배경',
+          'crew.backgrounds.note': '군인, 개발자, 연구원 등 여러 분야의 전문인들이 모여 있습니다.',
+          'crew.knowledge': '쌓여온 데이터',
+          'crew.knowledge.note': '여러 브랜드와 장비를 직접 사용하며 쌓은 방대한 실전 데이터를 공유합니다.',
+          'crew.newbies': '뉴비 대환영',
+          'crew.newbies.note': '에어소프트 8년 차부터 처음 뛰어보는 뉴비까지 함께합니다.',
+          'field.title': '그대로 <span>오세요.</span>',
+          'field.intro': '완벽한 장비도, 맞춘 복장도, 매번 참가해야 한다는 부담도 필요 없습니다.',
+          'field.gear.num': '01 / 장비',
+          'field.gear.title': '장비가 없어도 괜찮습니다',
+          'field.gear.copy': '게임 전에 요청하면 참여에 맞는 장비를 찾아 대여할 수 있도록 도와드립니다.',
+          'field.style.num': '02 / 복장',
+          'field.style.title': '자기 스타일대로 입습니다',
+          'field.style.copy': '정해진 팀 복장은 없습니다. 회칙에 어긋나지 않는 복장은 모두 자유입니다.',
+          'field.pace.num': '03 / 참여',
+          'field.pace.title': '자기 속도로 참여합니다',
+          'field.pace.copy': '게임 참가는 필수가 아닙니다. 먼저 함께 와서 팀과 필드 분위기를 살펴봐도 좋습니다.',
+          'faq.index': '/ 03 — 첫 게임 전에',
+          'faq.title': '자주 묻는 질문',
+          'faq.intro': '개노답 형제들을 처음 만나기 전에 가장 많이 물어보는 내용입니다.',
+          'faq.dues.q': '회비가 따로 있나요?',
+          'faq.dues.a': '네. 반기별로 3,000원을 받고 있습니다.',
+          'faq.gear.q': '개인 장비가 있어야 들어갈 수 있나요?',
+          'faq.gear.a': '아닙니다. 게임 참가 전에 장비 대여를 요청하면 적당한 장비를 찾아 대여해드립니다.',
+          'faq.uniform.q': '팀 단체 복장이 있나요?',
+          'faq.uniform.a': '없습니다. 회칙에 어긋나지 않는 복장은 모두 자유롭게 입을 수 있습니다.',
+          'faq.trigger.q': 'HPA나 바이너리 트리거를 써도 되나요?',
+          'faq.trigger.a': '아쉽게도 HPA와 바이너리 트리거는 제한합니다. 장비 방식이 헷갈리면 사용 전에 팀원에게 문의해주세요.',
+          'faq.required.q': '게임은 필수로 뛰어야 하나요?',
+          'faq.required.a': '아닙니다. 게임에 참여하지 않고 함께 와서 팀원들과 어울리며 분위기를 살펴봐도 좋습니다.',
+          'faq.age.q': '나이 제한이 있나요?',
+          'faq.age.a': '만 18세 이상 성인만 받고 있습니다. 미성년자는 보호자가 입회한 경우에만 참가할 수 있습니다.',
+          'faq.field.q': '팀이 소유한 필드가 있나요?',
+          'faq.field.a': '아직은 없습니다. 게임 일정에 따라 여러 필드를 이용합니다.',
+          'faq.transport.q': '필드까지 어떻게 이동하나요?',
+          'faq.transport.a': '원칙적으로 대중교통을 이용하지만, 대부분 자차를 보유한 팀원과 카풀로 이동합니다.',
+          'faq.safety.q': '보호구는 필수인가요?',
+          'faq.safety.a': '고글은 반드시 착용해야 합니다. 페이스 마스크는 선택이지만 치아와 얼굴 보호를 위해 강하게 권장합니다.',
+          'faq.normal.q': '팀원들이 정상인인가요?',
+          'faq.normal.a': '아니요. 안타깝게도 정상인이 단 한 명도 없습니다. 정상인이라고 주장해도 믿지 마세요.',
+          'invite.title': '색다른<br /><span>취미생활.</span>',
+          'invite.copy': '8년 차 고인물부터 완전한 뉴비까지 자기 속도로 시작할 수 있습니다. 첫 게임 전에 궁금한 점은 인스타그램으로 편하게 물어보세요.',
+          'invite.cta': '인스타그램에서 만나기',
+          'footer.tagline': 'No tactic. Best tactic.',
+          'footer.instagram': '@gndbros_airsoft',
+          'footer.top': '맨 위로'
+        }
+      };
+
+      const translate = (language) => {
+        const copy = translations[language];
+        document.documentElement.lang = language === 'ko' ? 'ko' : 'en';
+        document.title = copy.title;
+        languageToggle.setAttribute('aria-label', copy.languageLabel);
+        document.querySelectorAll('[data-i18n]').forEach((element) => {
+          const value = copy[element.dataset.i18n];
+          if (value) element.innerHTML = value;
+        });
+        document.querySelectorAll('[data-i18n-aria]').forEach((element) => {
+          const value = copy[element.dataset.i18nAria];
+          if (value) element.setAttribute('aria-label', value);
+        });
+        document.querySelectorAll('[data-i18n-alt]').forEach((element) => {
+          const value = copy[element.dataset.i18nAlt];
+          if (value) element.setAttribute('alt', value);
+        });
+        document.querySelectorAll('[data-language-option]').forEach((option) => {
+          option.classList.toggle('is-active', option.dataset.languageOption === language);
+          option.setAttribute('aria-current', String(option.dataset.languageOption === language));
+        });
+        if (window.lucide) window.lucide.createIcons();
+      };
+
+      let savedLanguage;
+      try { savedLanguage = window.localStorage.getItem('gndbros-language'); } catch {}
+      let currentLanguage = savedLanguage === 'ko' ? 'ko' : 'en';
+      languageToggle.addEventListener('click', () => {
+        currentLanguage = currentLanguage === 'en' ? 'ko' : 'en';
+        try { window.localStorage.setItem('gndbros-language', currentLanguage); } catch {}
+        translate(currentLanguage);
+      });
+      translate(currentLanguage);
+
+      const revealItems = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.14 });
+      revealItems.forEach((item) => observer.observe(item));
+      const updateNav = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+      updateNav();
+      window.addEventListener('scroll', updateNav, { passive: true });
+    </script>
+  </body>
+</html>
